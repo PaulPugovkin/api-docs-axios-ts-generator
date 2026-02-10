@@ -1,0 +1,53 @@
+{
+  "name": "@paulpugovkin/api-docs-axios-ts-generator",
+  "version": "1.0.4",
+  "description": "Generate TypeScript interfaces and axios classes from OpenAPI documentation",
+  "main": "src/index.js",
+  "bin": {
+    "api-docs-generator": "./bin/cli.js"
+  },
+  "types": "src/types/index.d.ts",
+  "scripts": {
+    "generate-services": "npx @paulpugovkin/api-docs-axios-ts-generator --config api-docs-generator.config.js",
+    "postinstall": "node src/scripts/createConfigFile.js"
+  },
+  "keywords": [
+    "openapi",
+    "swagger",
+    "typescript",
+    "axios",
+    "generator",
+    "api-client",
+    "code-generation",
+    "api",
+    "rest"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^11.0.0",
+    "node-fetch": "^2.7.0",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "files": [
+    "src",
+    "bin",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PaulPugovkin/api-docs-axios-ts-generator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/PaulPugovkin/api-docs-axios-ts-generator/issues"
+  },
+  "homepage": "https://github.com/PaulPugovkin/api-docs-axios-ts-generator#readme"
+}

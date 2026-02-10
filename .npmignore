@@ -1,0 +1,45 @@
+# Исключения для публикации на npm
+
+# Исходные файлы TypeScript
+src/types/*.ts
+src/config/*.ts
+
+# Тесты и примеры
+examples/
+tests/
+__tests__/
+
+# Документация
+plans/
+
+# Конфигурационные файлы
+api-docs-generator.config.ts
+tsconfig.json
+
+# Сгенерированные файлы
+generated/
+dist/
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Логи
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Временные файлы
+*.tmp
+.temp/
