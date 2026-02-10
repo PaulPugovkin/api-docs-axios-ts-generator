@@ -2,9 +2,9 @@
   "name": "@paulpugovkin/api-docs-axios-ts-generator",
   "version": "1.0.0",
   "description": "Generate TypeScript interfaces and axios classes from OpenAPI documentation",
-  "main": "src/index.js",
+  "main": "src/index.min.js",
   "bin": {
-    "api-docs-generator": "./bin/cli.js"
+    "api-docs-generator": "./src/index.min.js"
   },
   "types": "src/types/index.d.ts",
   "scripts": {
