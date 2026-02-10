@@ -6,6 +6,8 @@
  * @param {Object} config - Конфигурация генератора
  * @returns {string} - Сгенерированный код класса TypeScript
  */
+const path = require('path');
+
 function generateClass(name, methods, usedInterfaces, config) {
     const axiosResponseImport =
         'import { AxiosResponse, AxiosRequestConfig } from "axios";\n';
@@ -14,12 +16,17 @@ function generateClass(name, methods, usedInterfaces, config) {
     const axiosPath = config?.imports?.axiosPath || 'axios';
     const baseUrlPath = config?.imports?.baseUrlPath || './config/axios/axios';
 
+    // Определяем базовый путь для импорта интерфейсов (папка выше, чем папка с классами)
+    const interfaceImportPath = config?.outputDir
+        ? path.relative(path.join(config.outputDir, 'classes'), config.outputDir)
+        : '../../';
+
     // Импорты интерфейсов
     let interfaceImport = '';
     if (usedInterfaces && usedInterfaces.size > 0) {
         interfaceImport = Array.from(usedInterfaces)
             .sort()
-            .map((interfaceName) => `import { ${interfaceName} } from '../../';`)
+            .map((interfaceName) => `import { ${interfaceName} } from '${interfaceImportPath}';`)
             .join("\n");
     }
 

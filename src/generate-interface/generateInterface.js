@@ -1,4 +1,5 @@
 const {resolveType} = require("../resolve-type/resolveType"); // Импорт функции resolveType
+const path = require("path");
 
 function capitalizeOnlyFirst(text) {
     return text ? text.charAt(0).toUpperCase() + text.slice(1) : text;
@@ -35,7 +36,7 @@ function processOneOf(oneOf, schemaRefs, usedInterfaces) {
     return unionTypes;
 }
 
-function generateInterface(name, schema, schemaRefs) {
+function generateInterface(name, schema, schemaRefs, config) {
     const usedInterfaces = new Set();
     let properties = schema.properties || {};
     let extendsInterfaces = [];
@@ -60,9 +61,14 @@ function generateInterface(name, schema, schemaRefs) {
         props.push(`  ${propName}: ${tsType};`);
     }
 
+    // Определяем базовый путь для импорта интерфейсов
+    const interfaceImportPath = config?.outputDir
+        ? path.relative(path.join(config.outputDir, 'interfaces'), config.outputDir)
+        : './';
+
     const imports = Array.from(usedInterfaces)
         .sort()
-        .map((interfaceName) => `import { ${interfaceName} } from './';`)
+        .map((interfaceName) => `import { ${interfaceName} } from '${interfaceImportPath}';`)
         .join("\n");
 
     const extendsClause = extendsInterfaces.length

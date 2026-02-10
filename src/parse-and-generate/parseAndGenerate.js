@@ -71,7 +71,7 @@ async function parseAndGenerate(jsonFile, config) {
     const spec = JSON.parse(fs.readFileSync(jsonFile, {encoding: "utf-8"}));
 
     // Определяем пути из конфигурации
-    const outputDir = config.outputDir;
+    const outputDir = config.outputDir || path.resolve(process.cwd(), "generated");
     const interfacesDir = config.interfacesDir || path.join(outputDir, "interfaces");
     const classesDir = config.classesDir || path.join(outputDir, "classes");
 
@@ -86,7 +86,8 @@ async function parseAndGenerate(jsonFile, config) {
             const interfaceCode = generateInterface(
                 schemaName,
                 schema,
-                schemaRefs
+                schemaRefs,
+                config
             );
             fs.writeFileSync(
                 path.join(interfacesDir, `${schemaName}.ts`),

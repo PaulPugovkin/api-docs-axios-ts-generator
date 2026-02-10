@@ -1,14 +1,16 @@
 {
   "name": "@paulpugovkin/api-docs-axios-ts-generator",
-  "version": "1.0.0",
+  "version": "1.0.15",
   "description": "Generate TypeScript interfaces and axios classes from OpenAPI documentation",
-  "main": "src/index.min.js",
+  "main": "src/index.js",
   "bin": {
-    "api-docs-generator": "./src/index.min.js"
+    "api-docs-generator": "./bin/cli.js"
   },
   "types": "src/types/index.d.ts",
   "scripts": {
     "generate-services": "npx @paulpugovkin/api-docs-axios-ts-generator --config api-docs-generator.config.js",
+    "dev": "node scripts/dev.js",
+    "dev:ts": "ts-node scripts/dev.ts",
     "postinstall": "node src/scripts/createConfigFile.js"
   },
   "keywords": [
@@ -37,7 +39,22 @@
     "node": ">=14.0.0"
   },
   "files": [
-    "src",
+    "src/index.min.js",
+    "src/clean-generated-folder",
+    "src/collect-genereted-files",
+    "src/generate-class",
+    "src/generate-index-file-with-public-api",
+    "src/generate-interface",
+    "src/generate-js-doc",
+    "src/generate-main-index-file",
+    "src/generate-method",
+    "src/generators",
+    "src/map-type",
+    "src/parse-and-generate",
+    "src/resolve-type",
+    "src/scripts",
+    "src/templates",
+    "src/update-api-docs-json",
     "bin",
     "README.md",
     "LICENSE"

@@ -1,6 +1,4 @@
 const {program} = require("commander");
-const path = require("path");
-const fs = require("fs");
 
 // Модули генератора
 const {
@@ -18,14 +16,51 @@ const {
 } = require("./generate-main-index-file/generateMainIndexFile");
 const {generateAxiosConfig} = require("./generators/axiosConfigGenerator");
 
-// Модуль загрузки конфигурации (компилированный TypeScript)
-let loadConfig;
-try {
-    loadConfig = require("./config/loadConfig").loadConfig;
-} catch (e) {
-    // Если скомпилированный файл не существует, используем простой режим
-    console.warn("Config module not found, using CLI mode only");
-    loadConfig = null;
+// Simple configuration loader
+const fs = require('fs');
+const path = require('path');
+
+async function loadConfig(configPath, cliOptions = {}) {
+  const resolvedPath = path.resolve(configPath);
+
+  if (!fs.existsSync(resolvedPath)) {
+    throw new Error(`Configuration file not found: ${resolvedPath}`);
+  }
+
+  const ext = path.extname(resolvedPath);
+  let config;
+
+  try {
+    if (ext === '.js') {
+      const modulePath = resolvedPath;
+      config = require(modulePath);
+    } else if (ext === '.json') {
+      const content = fs.readFileSync(resolvedPath, 'utf8');
+      config = JSON.parse(content);
+    } else if (ext === '.ts') {
+      const ts = require('typescript');
+      const result = ts.transpileModule(content, {
+        compilerOptions: {
+          module: 1, // CommonJS
+          target: 99, // ESNext
+          esModuleInterop: true,
+        },
+      });
+      const modulePath = resolvedPath.replace('.ts', '.js');
+      fs.writeFileSync(modulePath, result.outputText);
+      config = require(modulePath);
+    } else {
+      throw new Error(`Unsupported configuration file format. Use .js, .json, or .ts`);
+    }
+  } catch (error) {
+    throw new Error(`Failed to load configuration: ${error.message}`);
+  }
+
+  // Merge CLI options with config
+  return {
+    ...config,
+    ...cliOptions,
+  };
 }
 
 // Основной инструмент CLI
@@ -47,7 +82,7 @@ async function main() {
     let config = null;
 
     // Загрузка конфигурации из файла или использование CLI аргументов
-    if (configPath && loadConfig) {
+    if (configPath) {
         try {
             config = await loadConfig(configPath, {
                 apiDocsUrl: options.apiDocsUrl,
@@ -61,7 +96,7 @@ async function main() {
     } else {
         // Режим обратной совместимости - использование CLI аргументов
         const apiDocsUrl = options.apiDocsUrl;
-        const outputDir = options.outputDir || path.resolve(__dirname, "../generated");
+        const outputDir = options.outputDir || path.resolve(process.cwd(), "generated");
 
         // Проверяем, указан ли URL для API документации
         if (!apiDocsUrl) {
@@ -87,10 +122,10 @@ async function main() {
     }
 
     console.log(`Using API Docs URL: ${config.apiDocsUrl}`);
-    console.log(`Output directory: ${config.outputDir}`);
+    console.log(`Output directory: ${config.outputDir || 'Not specified - using default'}`);
 
     // Определяем пути
-    const outputDir = config.outputDir;
+    const outputDir = config.outputDir || path.resolve(process.cwd(), "generated");
     const interfacesDir = config.interfacesDir || path.join(outputDir, "interfaces");
     const classesDir = config.classesDir || path.join(outputDir, "classes");
     const interfacesOpenApi = path.join(interfacesDir, "index.ts");
