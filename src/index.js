@@ -39,6 +39,7 @@ async function loadConfig(configPath, cliOptions = {}) {
       config = JSON.parse(content);
     } else if (ext === '.ts') {
       const ts = require('typescript');
+      const content = fs.readFileSync(resolvedPath, 'utf8');
       const result = ts.transpileModule(content, {
         compilerOptions: {
           module: 1, // CommonJS
@@ -56,11 +57,15 @@ async function loadConfig(configPath, cliOptions = {}) {
     throw new Error(`Failed to load configuration: ${error.message}`);
   }
 
-  // Merge CLI options with config
-  return {
-    ...config,
-    ...cliOptions,
-  };
+  // Merge CLI options with config, filtering out undefined values
+  const mergedConfig = { ...config };
+  Object.keys(cliOptions).forEach(key => {
+    if (cliOptions[key] !== undefined) {
+      mergedConfig[key] = cliOptions[key];
+    }
+  });
+
+  return mergedConfig;
 }
 
 // Основной инструмент CLI
@@ -77,7 +82,25 @@ program
 // Основной вызов
 async function main() {
     const options = program.opts();
-    const configPath = options.config;
+    let configPath = options.config;
+
+    // Автоматическое обнаружение конфигурационного файла, если он не указан явно
+    if (!configPath) {
+        const defaultConfigs = [
+            'api-docs-generator.config.js',
+            'api-docs-generator.config.json',
+            'api-docs-generator.config.ts'
+        ];
+        
+        for (const file of defaultConfigs) {
+            const filePath = path.join(process.cwd(), file);
+            if (fs.existsSync(filePath)) {
+                configPath = filePath;
+                console.log(`Auto-detected configuration file: ${file}`);
+                break;
+            }
+        }
+    }
 
     let config = null;
 
