@@ -2,6 +2,20 @@
 
 Все заметные изменения в проекте будут задокументированы в этом файле.
 
+## [1.2.0] - 2026-05-24
+
+### Изменения
+- ⚡ **Сборщик tsup**: исходные файлы теперь собираются в один минифицированный `dist/index.js` (16 KB, было 25+ файлов)
+- ⚡ **Убран `node-fetch`**: используется нативный `fetch` Node.js 18+, убрана зависимость
+- ⚡ **axios → peerDependencies**: пакет больше не тянет axios при установке (~2 MB экономии)
+- 🎯 **Generated code**: `import type` вместо `import` для типов — улучшен tree-shaking
+- 🗑️ **Удалён мёртвый код**: папка `collect-genereted-files` (с опечаткой, нигде не использовалась)
+- 🏗️ **Добавлен `tsconfig.json`** и `tsup.config.ts`
+- 📦 **Обновлён `package.json`**: `main` → `dist/index.js`, `bin` → `./dist/index.js`, `files` → только `dist` + `src/scripts` + `src/templates`
+- 🔧 **`engines.node`**: поднято до `>=18` (breaking change)
+- 🚀 **CI**: добавлен GitHub Actions workflow для публикации при пуше тега `v*`
+- 🔐 **`.env`**: удалён из репозитория (NPM токен)
+
 ## [1.1.0] - 2026-02-11
 
 ### Новые возможности

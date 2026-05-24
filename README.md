@@ -115,6 +115,24 @@ Options:
   -h, --help                 Display help
 ```
 
+## Publishing
+
+Publishing is automated via GitHub Actions on version tags:
+
+```bash
+npm version patch   # bump version
+git push --tags     # triggers publish workflow
+```
+
+Add `NPM_TOKEN` to GitHub repository secrets (Settings → Secrets → Actions).
+
+## v1.1.0 changes
+
+- **Bundled**: single minified dist (16 KB, was 25+ raw files)
+- **Node >= 18**: removed `node-fetch` dependency, uses native `fetch`
+- **Axios → peer dep**: no longer installed automatically (~2 MB less)
+- **Generated code**: `import type` instead of `import` for better tree-shaking
+
 ## License
 
 MIT
