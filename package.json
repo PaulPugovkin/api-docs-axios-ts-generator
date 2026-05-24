@@ -4,7 +4,7 @@
   "description": "Generate TypeScript interfaces and axios classes from OpenAPI documentation",
   "main": "dist/index.js",
   "bin": {
-    "api-docs-generator": "./dist/index.js"
+    "api-docs-generator": "dist/index.js"
   },
   "scripts": {
     "generate-services": "npx @paulpugovkin/api-docs-axios-ts-generator --config api-docs-generator.config.js",
