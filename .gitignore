@@ -52,6 +52,9 @@ coverage/
 .temp/
 .cache/
 
+# Generated config artifacts
+api-docs-generator.config.js
+
 # TypeScript
 *.tsbuildinfo
 

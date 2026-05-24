@@ -18,7 +18,6 @@ tsconfig.json
 
 # Сгенерированные файлы
 generated/
-dist/
 
 # Git
 .git/

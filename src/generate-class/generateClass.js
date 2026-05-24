@@ -10,7 +10,7 @@ const path = require('path');
 
 function generateClass(name, methods, usedInterfaces, config) {
     const axiosResponseImport =
-        'import { AxiosResponse, AxiosRequestConfig } from "axios";\n';
+        'import type { AxiosResponse, AxiosRequestConfig } from "axios";\n';
 
     // Определяем пути импорта из конфигурации
     const axiosPath = config?.imports?.axiosPath || 'axios';

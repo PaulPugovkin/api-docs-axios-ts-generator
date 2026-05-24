@@ -68,7 +68,7 @@ function generateInterface(name, schema, schemaRefs, config) {
 
     const imports = Array.from(usedInterfaces)
         .sort()
-        .map((interfaceName) => `import { ${interfaceName} } from '${interfaceImportPath}';`)
+        .map((interfaceName) => `import type { ${interfaceName} } from '${interfaceImportPath}';`)
         .join("\n");
 
     const extendsClause = extendsInterfaces.length

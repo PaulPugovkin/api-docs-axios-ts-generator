@@ -2,15 +2,16 @@
   "name": "@paulpugovkin/api-docs-axios-ts-generator",
   "version": "1.1.0",
   "description": "Generate TypeScript interfaces and axios classes from OpenAPI documentation",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "bin": {
-    "api-docs-generator": "./bin/cli.js"
+    "api-docs-generator": "./dist/index.js"
   },
-  "types": "src/types/index.d.ts",
   "scripts": {
     "generate-services": "npx @paulpugovkin/api-docs-axios-ts-generator --config api-docs-generator.config.js",
     "dev": "node scripts/dev.js",
     "dev:ts": "ts-node scripts/dev.ts",
+    "build": "tsup",
+    "prepublishOnly": "npm run build",
     "postinstall": "node src/scripts/createConfigFile.js"
   },
   "keywords": [
@@ -27,35 +28,23 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "commander": "^11.0.0",
-    "node-fetch": "^2.7.0",
+    "commander": "^11.0.0"
+  },
+  "peerDependencies": {
     "axios": "^1.6.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
+    "tsup": "^8.5.1",
     "typescript": "^5.0.0"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0"
   },
   "files": [
-    "src/index.min.js",
-    "src/clean-generated-folder",
-    "src/collect-genereted-files",
-    "src/generate-class",
-    "src/generate-index-file-with-public-api",
-    "src/generate-interface",
-    "src/generate-js-doc",
-    "src/generate-main-index-file",
-    "src/generate-method",
-    "src/generators",
-    "src/map-type",
-    "src/parse-and-generate",
-    "src/resolve-type",
+    "dist",
     "src/scripts",
     "src/templates",
-    "src/update-api-docs-json",
-    "bin",
     "README.md",
     "LICENSE"
   ],
